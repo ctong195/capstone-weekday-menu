@@ -10,6 +10,9 @@ This application offers a weekday lunch ordering experience. Each weekday, the s
 4. Patrons must be able to choose pickup times in 15-minute increments.
 5. Pickup slots must run from 10:30 AM to 2:30 PM.
 6. Each pickup slot must have a maximum capacity of 15 meals.
+7. The app must be deployable as a web frontend that patrons can access in a browser.
+8. The project must include a test suite that validates critical business and payment flows.
+9. All payment-related transactions and data in transit must be encrypted.
 
 ## 3. Scope
 ### In Scope
@@ -17,6 +20,7 @@ This application offers a weekday lunch ordering experience. Each weekday, the s
 - Fixed price enforcement.
 - Checkout with Apple Pay, Google Pay, and PayPal.
 - Pickup slot booking with capacity tracking.
+- Deployable web frontend for browsing menu and placing orders.
 - Basic order confirmation.
 
 ### Out of Scope
@@ -44,6 +48,11 @@ This application offers a weekday lunch ordering experience. Each weekday, the s
 3. Patron selects a pickup slot.
 4. Patron completes payment via one of the supported providers.
 5. Patron receives order confirmation including selected dishes, total amount, and pickup time.
+
+### 4.6 Frontend Dish Presentation
+1. The frontend must display a picture for each dish shown in the daily menu.
+2. Each dish picture must be clearly associated with its dish name and fixed price.
+3. If a dish image is unavailable, the frontend must display a default fallback image.
 
 ### 4.4 Pickup Slot Rules
 1. Slot interval is 15 minutes.
@@ -137,16 +146,27 @@ This application offers a weekday lunch ordering experience. Each weekday, the s
 1. Availability: App should be available during ordering hours with graceful degradation.
 2. Performance: Menu and slot queries should return in under 500 ms in normal load.
 3. Security: Payment data handling must use provider tokens; no raw card data stored.
-4. Observability: Log payment failures, slot over-capacity attempts, and order state transitions.
+4. Security: All client-server and server-provider payment communications must use TLS (HTTPS) encryption.
+5. Security: Sensitive payment references and transaction metadata must be encrypted at rest where stored.
+6. Testing: Maintain automated test coverage for menu generation, pricing validation, slot-capacity enforcement, payment provider validation, and error handling.
+7. Observability: Log payment failures, slot over-capacity attempts, and order state transitions.
+8. Deployability: Frontend assets must be buildable and deployable to a web hosting environment with HTTPS support.
 
-## 9. User Stories
+## 9. Testing Requirements
+1. Include unit tests for core business logic (weekday checks, menu generation, price enforcement, slot-capacity limits).
+2. Include API integration tests for order creation and validation errors.
+3. Include payment-flow tests using sandbox or mocked provider responses for success and failure paths.
+4. Include regression tests for previously fixed defects.
+5. Tests must run in CI on every pull request.
+
+## 10. User Stories
 1. As a patron, I want to see today's 3-dish menu so I can quickly choose lunch.
 2. As a patron, I want a fixed and transparent price so checkout is predictable.
 3. As a patron, I want to pay with my preferred wallet (Apple Pay, Google Pay, PayPal).
 4. As a patron, I want to choose a pickup time so I can collect lunch conveniently.
 5. As an operator, I want slot capacity limits so kitchen workload stays manageable.
 
-## 10. Acceptance Criteria
+## 11. Acceptance Criteria
 1. On a weekday, the app displays exactly 3 menu dishes.
 2. Every displayed dish is priced at $15.95.
 3. Checkout displays Apple Pay, Google Pay, and PayPal options.
@@ -155,8 +175,12 @@ This application offers a weekday lunch ordering experience. Each weekday, the s
 6. A paid order decreases slot remaining capacity by selected meal count.
 7. Attempting to exceed slot capacity returns a clear validation error.
 8. Weekend menu generation requests are rejected with a validation message.
+9. The frontend can be deployed and accessed via a browser URL over HTTPS.
+10. Automated tests can be run in one command and include critical business and payment scenarios.
+11. Payment-related requests fail if secure transport requirements are not met.
+12. Each menu dish shown on the frontend includes a visible dish image or fallback image.
 
-## 11. Open Decisions
+## 12. Open Decisions
 1. Time zone source (single fixed zone vs location-based).
 2. Whether slot reservation expires after a timeout before payment completion.
 3. Whether partial refunds are supported when edits/cancellations are added.
