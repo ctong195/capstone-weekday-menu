@@ -4,6 +4,7 @@ const orderForm = document.getElementById("order-form");
 const orderDateInput = document.getElementById("order-date");
 const pickupSlotSelect = document.getElementById("pickup-slot");
 const result = document.getElementById("result");
+const fallbackDishImage = "/static/images/dish-fallback.svg";
 
 let currentMenu = [];
 
@@ -16,7 +17,7 @@ async function loadMenu() {
   const data = await response.json();
 
   if (!response.ok) {
-    menuList.innerHTML = `<li>${data.detail || "Unable to load menu"}</li>`;
+    menuList.textContent = data.detail || "Unable to load menu";
     return;
   }
 
@@ -25,9 +26,32 @@ async function loadMenu() {
   dishOptions.innerHTML = "";
 
   data.dishes.forEach((dish) => {
-    const li = document.createElement("li");
-    li.textContent = `${dish.name} - $${dish.price.toFixed(2)}`;
-    menuList.appendChild(li);
+    const article = document.createElement("article");
+    article.className = "dish-card";
+
+    const image = document.createElement("img");
+    image.className = "dish-image";
+    image.src = dish.image_url || fallbackDishImage;
+    image.alt = dish.name;
+    image.addEventListener("error", () => {
+      if (!image.src.endsWith(fallbackDishImage)) {
+        image.src = fallbackDishImage;
+      }
+    });
+
+    const details = document.createElement("div");
+    details.className = "dish-details";
+
+    const name = document.createElement("h3");
+    name.textContent = dish.name;
+
+    const price = document.createElement("p");
+    price.className = "dish-price";
+    price.textContent = `$${dish.price.toFixed(2)}`;
+
+    details.append(name, price);
+    article.append(image, details);
+    menuList.appendChild(article);
 
     const label = document.createElement("label");
     label.className = "dish-option";

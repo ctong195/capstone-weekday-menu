@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 from fastapi.testclient import TestClient
 
-from src.app import app, state
+from src.app import DISH_CATALOG, FALLBACK_DISH_IMAGE_URL, app, state
 
 
 client = TestClient(app)
@@ -36,6 +36,28 @@ def test_generate_menu_has_three_items_and_fixed_price() -> None:
     payload = response.json()
     assert len(payload["dishes"]) == 3
     assert all(dish["price"] == 15.95 for dish in payload["dishes"])
+    assert all(dish["image_url"] for dish in payload["dishes"])
+
+
+def test_menu_uses_fallback_when_catalog_images_are_missing(monkeypatch) -> None:
+    for dish in DISH_CATALOG:
+        monkeypatch.setitem(dish, "image_url", "")
+
+    weekday = next_weekday(date.today())
+    response = client.post(f"/menu/generate?menu_date={weekday.isoformat()}")
+
+    assert response.status_code == 200
+    assert all(
+        dish["image_url"] == FALLBACK_DISH_IMAGE_URL
+        for dish in response.json()["dishes"]
+    )
+
+
+def test_frontend_fallback_image_is_available() -> None:
+    response = client.get(FALLBACK_DISH_IMAGE_URL)
+
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/svg+xml"
 
 
 def test_weekend_menu_generation_rejected() -> None:
