@@ -14,17 +14,54 @@ from pydantic import BaseModel, Field
 PRICE_PER_DISH = Decimal("15.95")
 MAX_MEALS_PER_SLOT = 15
 PAYMENT_PROVIDERS = {"apple_pay", "google_pay", "paypal"}
+FALLBACK_DISH_IMAGE_URL = "/static/images/dish-fallback.svg"
 
 DISH_CATALOG = [
-    {"id": "dish_1", "name": "Lemongrass Chicken Bowl"},
-    {"id": "dish_2", "name": "Roasted Veggie Pasta"},
-    {"id": "dish_3", "name": "Miso Salmon Rice"},
-    {"id": "dish_4", "name": "Chipotle Tofu Wrap"},
-    {"id": "dish_5", "name": "Turkey Pesto Panini"},
-    {"id": "dish_6", "name": "Herb Falafel Plate"},
-    {"id": "dish_7", "name": "Korean Beef Noodles"},
-    {"id": "dish_8", "name": "Mediterranean Grain Bowl"},
-    {"id": "dish_9", "name": "Coconut Curry Chickpeas"},
+    {
+        "id": "dish_1",
+        "name": "Lemongrass Chicken Bowl",
+        "image_url": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_2",
+        "name": "Roasted Veggie Pasta",
+        "image_url": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_3",
+        "name": "Miso Salmon Rice",
+        "image_url": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_4",
+        "name": "Chipotle Tofu Wrap",
+        "image_url": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_5",
+        "name": "Turkey Pesto Panini",
+        "image_url": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_6",
+        "name": "Herb Falafel Plate",
+        "image_url": "https://images.unsplash.com/photo-1593001874117-c99c800e3eb9?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_7",
+        "name": "Korean Beef Noodles",
+        "image_url": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_8",
+        "name": "Mediterranean Grain Bowl",
+        "image_url": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+        "id": "dish_9",
+        "name": "Coconut Curry Chickpeas",
+        "image_url": "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80",
+    },
 ]
 
 
@@ -58,7 +95,12 @@ def generate_daily_menu(menu_date: date) -> list[dict[str, str | float]]:
     selected = rng.sample(DISH_CATALOG, k=3)
 
     return [
-        {"id": dish["id"], "name": dish["name"], "price": float(PRICE_PER_DISH)}
+        {
+            "id": dish["id"],
+            "name": dish["name"],
+            "price": float(PRICE_PER_DISH),
+            "image_url": dish.get("image_url") or FALLBACK_DISH_IMAGE_URL,
+        }
         for dish in selected
     ]
 

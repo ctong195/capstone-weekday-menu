@@ -9,7 +9,7 @@ Use this file to track work across design, implementation, and testing.
 - Done
 
 ## Current Phase
-- Phase: Discovery Documentation Completed, Build Iteration Ongoing
+- Phase: Dish Image Support Completed, Build Iteration Ongoing
 - Owner: Chin Tong
 - Last Updated: 2026-08-20
 
@@ -28,6 +28,7 @@ Use this file to track work across design, implementation, and testing.
 | 2026-08-05 | Spec Enhancements | Added requirements for deployable web frontend, test suite expectations, encrypted transactions, and dish images in frontend. | Keep acceptance criteria aligned with implementation milestones. | None |
 | 2026-08-20 | Progressive Discovery Docs | Added [README.md](README.md), [01-design.md](01-design.md), [02-implementation.md](02-implementation.md), and [03-testing.md](03-testing.md). | Use docs sequence for planning and execution reviews. | None |
 | 2026-08-20 | Progress Tracking | Added this [progress.md](progress.md) tracker and updated discovery docs to require progress updates each phase. | Maintain this file whenever scope, status, or blockers change. | None |
+| 2026-08-20 | Dish Image Support | Added image URLs to menu API responses, responsive image-first menu cards, a local fallback image, and automated fallback coverage. | Define the deployment target and add deployment configuration. | None |
 
 ## Decisions Log
 | Date | Decision | Reason |
@@ -37,3 +38,4 @@ Use this file to track work across design, implementation, and testing.
 | 2026-08-05 | Capacity is counted by meal count, not by order count. | Align throughput controls with kitchen workload realities. |
 | 2026-08-05 | Require encrypted payment-related transactions. | Protect payment information and align with secure handling expectations. |
 | 2026-08-20 | Use progressive discovery docs with mandatory progress tracking. | Improve visibility, handoff clarity, and delivery accountability. |
+| 2026-08-20 | Serve a local fallback whenever a catalog image URL is missing or fails to load. | Keep every menu dish visible when external image delivery is unavailable. |

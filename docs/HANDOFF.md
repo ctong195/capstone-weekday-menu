@@ -23,6 +23,11 @@
    - docs/README.md
 4. Progress tracker created and backfilled:
    - docs/progress.md
+5. Dish image support completed:
+   - Menu API responses include image URLs.
+   - Frontend uses responsive image-first menu cards.
+   - Missing or failed images use a local fallback asset.
+   - Backend and fallback asset behavior are covered by tests.
 
 ## Key Files to Start With
 1. docs/spec.md
@@ -32,14 +37,13 @@
 5. docs/03-testing.md
 
 ## Recommended Next Work
-1. Add image fields to the backend menu model and API response.
-2. Update frontend to render dish images and fallback images.
-3. Add tests for image field behavior and fallback rendering paths.
-4. Define deployment target and add deployment configuration.
+1. Define deployment target and add deployment configuration.
+2. Expand payment validation tests and model provider failures.
+3. Add browser-based tests as frontend interaction complexity grows.
 
 ## Suggested Prompt for GitHub Copilot App
 Use this project context:
 - Read docs/spec.md and docs/progress.md first.
 - Follow docs/README.md progressive flow.
-- Implement next milestone: dish image support end-to-end (backend model, API, frontend rendering, tests).
+- Implement next milestone: deployment configuration for secure browser access.
 - Keep changes small, tested, and aligned with acceptance criteria.
